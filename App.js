@@ -4,6 +4,12 @@ import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 import { useAssets } from "expo-asset";
 import { Ionicons } from "@expo/vector-icons";
+import {
+  NavigationContainer,
+  DarkTheme,
+  DefaultTheme,
+} from "@react-navigation/native";
+import Tabs from "./app/navigation/Tabs";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -39,17 +45,23 @@ export default function App() {
     }
   }, [appIsReady, assets, fontsLoaded]);
 
+  //const isDark = useColorScheme() === "dark";
   if (!appIsReady || !assets || !fontsLoaded) {
     return null;
   }
 
   return (
-    <View
-      style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-      onLayout={onLayoutRootView}
-    >
-      <Text>SplashScreen Demo! 👋</Text>
-      <Image source={assets[0]} />
+    // <View
+    //   style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+    //   onLayout={onLayoutRootView}
+    // >
+    //   <Text>SplashScreen Demo! 👋</Text>
+    //   <Image source={assets[0]} />
+    // </View>
+    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+      <NavigationContainer>
+        <Tabs />
+      </NavigationContainer>
     </View>
   );
 }
