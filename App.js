@@ -10,6 +10,8 @@ import {
   DefaultTheme,
 } from "@react-navigation/native";
 import Tabs from "./app/navigation/Tabs";
+import Stack from "./app/navigation/Stack";
+import Root from "./app/navigation/Root";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -60,7 +62,9 @@ export default function App() {
     // </View>
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <NavigationContainer>
-        <Tabs />
+        <Root />
+        {/* <Tabs /> */}
+        {/* <Stack /> */}
       </NavigationContainer>
     </View>
   );

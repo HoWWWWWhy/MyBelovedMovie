@@ -21,6 +21,7 @@ const Tabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{
+        headerShown: false,
         tabBarStyle: {
           backgroundColor: isDark ? BLACK_COLOR : WHITE,
         },
