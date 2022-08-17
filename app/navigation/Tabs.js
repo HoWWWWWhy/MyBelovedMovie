@@ -20,6 +20,7 @@ const Tabs = () => {
   //console.log(isDark);
   return (
     <Tab.Navigator
+      sceneContainerStyle={{ backgroundColor: isDark ? BLACK_COLOR : WHITE }}
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
