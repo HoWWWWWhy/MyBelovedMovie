@@ -6,6 +6,7 @@ const Card = styled.Image`
   width: 100px;
   height: 160px;
   border-radius: 3px;
+  background-color: #dfe6e9;
 `;
 interface PosterProps {
   path: string;

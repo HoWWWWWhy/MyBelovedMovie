@@ -62,7 +62,7 @@ const Slide: React.FC<SlideProps> = ({
         <Column>
           <Title>{originalTitle}</Title>
           {voteAverage > 0 ? <Votes>⭐ {voteAverage}/10</Votes> : null}
-          {overview.length > 0 ? (
+          {overview.length > 100 ? (
             <Overview>{overview.slice(0, 100)}...</Overview>
           ) : null}
         </Column>
