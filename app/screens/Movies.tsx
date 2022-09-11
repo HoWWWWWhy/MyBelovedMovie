@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import Swiper from "react-native-swiper";
-import { ActivityIndicator, Dimensions } from "react-native";
+import { ActivityIndicator, Dimensions, RefreshControl } from "react-native";
 import Slide from "../components/Slide";
 import Poster from "../components/Poster";
 import Config from "react-native-config";
@@ -76,6 +76,8 @@ const ReleaseDate = styled.Text`
 
 const Movies: React.FC<NativeStackScreenProps<any, "Movie">> = () => {
   const [loading, setLoading] = useState(true);
+
+  const [refreshing, setRefreshing] = useState(false);
   const [nowPlaying, setNowPlaying] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
   const [trending, setTrending] = useState([]);
@@ -115,6 +117,13 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movie">> = () => {
     setLoading(false);
   };
 
+  const onRefresh = async () => {
+    //console.log("onRefresh");
+    setRefreshing(true);
+    await getData();
+    setRefreshing(false);
+  };
+
   useEffect(() => {
     getData();
   }, []);
@@ -124,7 +133,11 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movie">> = () => {
       <ActivityIndicator />
     </Loader>
   ) : (
-    <Container>
+    <Container
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <Swiper
         containerStyle={{
           width: "100%",
