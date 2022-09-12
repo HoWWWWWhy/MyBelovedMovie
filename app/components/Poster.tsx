@@ -8,6 +8,7 @@ const Card = styled.Image`
   border-radius: 3px;
   background-color: #dfe6e9;
 `;
+
 interface PosterProps {
   path: string;
 }
