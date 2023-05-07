@@ -12,7 +12,6 @@ const Title = styled.Text`
 const Movie = styled.View`
   padding: 0px 30px;
   flex-direction: row;
-  margin-bottom: 3px;
 `;
 
 const Column = styled.View`

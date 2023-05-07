@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import Swiper from "react-native-swiper";
-import { ActivityIndicator, Dimensions, RefreshControl } from "react-native";
+import {
+  ActivityIndicator,
+  Dimensions,
+  FlatList,
+  RefreshControl,
+  Text,
+  View,
+} from "react-native";
 import Slide from "../components/Slide";
 import Config from "react-native-config";
 import VMedia from "../components/VMedia";
@@ -25,10 +32,10 @@ const ListTitle = styled.Text`
   font-size: 18px;
   font-weight: 600;
   margin-left: 30px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
-const TrendingScroll = styled.ScrollView`
+const TrendingScroll = styled.FlatList`
   //margin-top: 20px;
 `;
 
@@ -90,69 +97,88 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movie">> = () => {
     getData();
   }, []);
 
+  const renderTrendingItem = ({ item }) => {
+    return (
+      <VMedia
+        posterPath={item.poster_path}
+        originalTitle={item.original_title}
+        voteAverage={item.vote_average}
+      />
+    );
+  };
+
+  const renderTrendingItemSeparator = () => {
+    return <View style={{ width: 20 }} />;
+  };
+
+  const renderUpcomingItem = ({ item }) => {
+    return (
+      <HMedia
+        posterPath={item.poster_path}
+        originalTitle={item.original_title}
+        overview={item.overview}
+        releaseDate={item.release_date}
+      />
+    );
+  };
+
+  const renderUpcomingItemSeparator = () => {
+    return <View style={{ height: 20 }} />;
+  };
+
   return loading ? (
     <Loader>
       <ActivityIndicator />
     </Loader>
   ) : (
-    <Container
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
-      <Swiper
-        containerStyle={{
-          width: "100%",
-          height: SCREEN_HEIGHT / 4,
-          marginBottom: 30,
-        }}
-        loop
-        autoplay
-        autoplayTimeout={3}
-        showsButtons={false}
-        showsPagination={false}
-      >
-        {nowPlaying.map((movie) => (
-          <Slide
-            key={movie.id}
-            backdropPath={movie.backdrop_path}
-            posterPath={movie.poster_path}
-            originalTitle={movie.original_title}
-            voteAverage={movie.vote_average}
-            overview={movie.overview}
-          />
-        ))}
-      </Swiper>
-      <ListContainer>
-        <ListTitle>Trending Movies</ListTitle>
-        <TrendingScroll
-          contentContainerStyle={{ paddingLeft: 30 }}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-        >
-          {trending.map((movie) => (
-            <VMedia
-              key={movie.id}
-              posterPath={movie.poster_path}
-              originalTitle={movie.original_title}
-              voteAverage={movie.vote_average}
+    <FlatList
+      onRefresh={onRefresh}
+      refreshing={refreshing}
+      ListHeaderComponent={
+        <>
+          <Swiper
+            containerStyle={{
+              width: "100%",
+              height: SCREEN_HEIGHT / 4,
+              marginBottom: 30,
+            }}
+            loop
+            autoplay
+            autoplayTimeout={3}
+            showsButtons={false}
+            showsPagination={false}
+          >
+            {nowPlaying.map((movie) => (
+              <Slide
+                key={movie.id}
+                backdropPath={movie.backdrop_path}
+                posterPath={movie.poster_path}
+                originalTitle={movie.original_title}
+                voteAverage={movie.vote_average}
+                overview={movie.overview}
+              />
+            ))}
+          </Swiper>
+          <ListContainer>
+            <ListTitle>Trending Movies</ListTitle>
+            <TrendingScroll
+              data={trending}
+              renderItem={renderTrendingItem}
+              ItemSeparatorComponent={renderTrendingItemSeparator}
+              keyExtractor={(item) => item.id + ""}
+              contentContainerStyle={{ paddingHorizontal: 30 }}
+              horizontal
+              showsHorizontalScrollIndicator={false}
             />
-          ))}
-        </TrendingScroll>
-      </ListContainer>
-      <ListContainer>
-        <ListTitle>Coming Soon</ListTitle>
-        {upcoming.map((movie) => (
-          <HMedia
-            key={movie.id}
-            posterPath={movie.poster_path}
-            originalTitle={movie.original_title}
-            overview={movie.overview}
-            releaseDate={movie.release_date}
-          />
-        ))}
-      </ListContainer>
-    </Container>
+          </ListContainer>
+          <ListTitle>Coming Soon</ListTitle>
+        </>
+      }
+      data={upcoming}
+      renderItem={renderUpcomingItem}
+      ItemSeparatorComponent={renderUpcomingItemSeparator}
+      keyExtractor={(item) => item.id + ""}
+    />
   );
 };
 export default Movies;
